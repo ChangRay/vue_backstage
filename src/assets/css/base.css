@@ -3,6 +3,12 @@ body {
   height: 100%;
   padding: 0;
   margin: 0;
+  font-family: Microsoft JhengHei, Arial, Helvetica, sans-serif;
+}
+
+input,
+button {
+  font-family: inherit;
 }
 
 img {
@@ -12,4 +18,14 @@ img {
 
 #app {
   height: 100%;
+}
+
+.el-breadcrumb {
+  margin-bottom: 20px;
+}
+
+.el-table {
+  width: 100%;
+  margin: 15px 0;
+  font-size: 12px;
 }

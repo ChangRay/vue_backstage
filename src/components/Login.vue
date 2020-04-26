@@ -126,6 +126,7 @@ export default {
         if (res.meta.status === 200) {
           this.$message.success('登入成功')
           // 保存token到client端中的session
+          window.sessionStorage.setItem('user', this.loginForm.username)
           window.sessionStorage.setItem('token', res.data.token)
           this.$router.push('/home')
         } else {

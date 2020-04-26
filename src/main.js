@@ -9,8 +9,16 @@ import './plugins/element.js'
 import './assets/css/base.scss'
 // 導入字體圖標
 import './assets/fonts/iconfont.css'
+
 // 為axios設置默認請求地址
 axios.defaults.baseURL = 'http://127.0.0.1:8888/api/private/v1/'
+// 為axios的所有請求設置攔截器(預先處理在pass請求給服務器 = 中間件的概念)
+axios.interceptors.request.use(config => {
+  console.log(config)
+  // 配置請求頭 - Authorization
+  config.headers.Authorization = window.sessionStorage.getItem('token')
+  return config
+})
 // 設置vue原型屬性實例(全局通用)
 Vue.prototype.$http = axios
 
