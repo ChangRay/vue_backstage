@@ -4,7 +4,10 @@ import Login from '../components/Login.vue'
 import Home from '../components/Home.vue'
 import Welcome from '../components/Welcome.vue'
 import Users from '../components/Users/Users.vue'
+import Rights from '../components/Rights/Rights.vue'
+import Roles from '../components/Rights/Roles.vue'
 
+// 註冊插件全局使用
 Vue.use(VueRouter)
 
 const routes = [
@@ -22,7 +25,9 @@ const routes = [
     redirect: '/welcome',
     children: [
       { path: '/welcome', component: Welcome },
-      { path: '/users', component: Users }
+      { path: '/users', component: Users },
+      { path: '/rights', component: Rights },
+      { path: '/roles', component: Roles }
     ]
   }
 ]
@@ -44,4 +49,5 @@ router.beforeEach((to, from, next) => {
   next()
 })
 
+// 導出以供入口文件接收並掛載路由規則到vue實例
 export default router

@@ -17,6 +17,7 @@ axios.interceptors.request.use(config => {
   console.log(config)
   // 配置請求頭 - Authorization
   config.headers.Authorization = window.sessionStorage.getItem('token')
+  // 返回加工過的請求(必須)
   return config
 })
 // 設置vue原型屬性實例(全局通用)

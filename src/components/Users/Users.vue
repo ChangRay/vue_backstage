@@ -59,7 +59,12 @@
                 @click="deleteUser(item_data.row.id, item_data.row.username)"
               ></el-button>
               <el-tooltip effect="dark" content="角色設定" placement="top" :enterable="false">
-                <el-button type="info" icon="el-icon-setting" size="mini"></el-button>
+                <el-button
+                  type="info"
+                  icon="el-icon-setting"
+                  size="mini"
+                  @click="setUserRole(item_data.row)"
+                ></el-button>
               </el-tooltip>
             </el-button-group>
           </template>
@@ -150,6 +155,35 @@
         <el-button type="primary" @click="editUser_pre_validate">確 定</el-button>
       </span>
     </el-dialog>
+
+    <!-- 設置用戶角色的對話框 -->
+    <el-dialog title="角色管理" :visible.sync="setUserRole_dialog_visible" width="50%">
+      <div>
+        <p>
+          當前用戶名:
+          <el-tag>{{currentSetting_user.username}}</el-tag>
+        </p>
+        <p>
+          當前角色:
+          <el-tag>{{currentSetting_user.role_name}}</el-tag>
+        </p>
+        <div>
+          選擇角色:
+          <el-select v-model="role_selected_value" placeholder="選擇角色">
+            <el-option
+              v-for="item in rolesList"
+              :key="item.id"
+              :label="item.roleName"
+              :value="item.id"
+            ></el-option>
+          </el-select>
+        </div>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="setUserRole_dialog_visible = false">取 消</el-button>
+        <el-button type="primary" @click="setUserRole_confirm">確 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -209,7 +243,15 @@ export default {
           { required: true, message: '請輸入電話', trigger: 'blur' },
           { min: 5, max: 20, message: '請輸入有效電話', trigger: 'blur' }
         ]
-      }
+      },
+      // 控制設置用戶角色的dialog
+      setUserRole_dialog_visible: false,
+      // 保存當前setting click的用戶info
+      currentSetting_user: {},
+      // 獲取所有角色列表
+      rolesList: [],
+      // 紀錄設定角色的選定值
+      role_selected_value: ''
     }
   },
   methods: {
@@ -344,6 +386,54 @@ export default {
         // 刪除失敗
         this.$message.warning('用戶刪除失敗')
       }
+    },
+    // 根據作用域插槽取得個別的值  並打開dialog注入對應的內容
+    async setUserRole(userInfo) {
+      // 保存到data中以供dialog使用
+      this.currentSetting_user = userInfo
+      // 獲取所有角色列表
+      const { data: res } = await this.$http.get('roles')
+
+      // 加載失敗
+      if (res.meta.status !== 200) {
+        this.$message.error('角色列表加載失敗')
+        return false
+      }
+
+      // 加載成功
+      this.rolesList = res.data
+      console.log(this.rolesList)
+      // 打開dialog
+      this.setUserRole_dialog_visible = true
+    },
+    // 異步請求 更新用戶角色設定
+    async setUserRole_confirm() {
+      // 校驗select框是否有值
+      if (!this.role_selected_value) {
+        this.$message.warning('請選擇角色!')
+        return false
+      }
+
+      // 異步請求
+      const { data: res } = await this.$http.put(
+        `users/${this.currentSetting_user.id}/role`,
+        {
+          rid: this.role_selected_value
+        }
+      )
+      // 請求失敗
+      if (res.meta.status !== 200) {
+        this.$message.error('角色設定失敗')
+        return false
+      }
+
+      this.$message.success('角色設定成功')
+      // 重新get最新user列表
+      this.getUserList()
+      // 清空select 的值  改為初始狀態
+      this.role_selected_value = ''
+      // 關閉dialog
+      this.setUserRole_dialog_visible = false
     }
   }
 }

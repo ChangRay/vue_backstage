@@ -141,7 +141,7 @@ export default {
   }
 
   img {
-    height: 100%;
+    height: 50px;
   }
 }
 
