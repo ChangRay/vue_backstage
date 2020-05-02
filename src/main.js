@@ -9,6 +9,11 @@ import './plugins/element.js'
 import './assets/css/base.scss'
 // 導入字體圖標
 import './assets/fonts/iconfont.css'
+// 導入vue-table-with-tree-grid
+import TreeTable from 'vue-table-with-tree-grid'
+
+// 全局註冊自定義組件
+Vue.component('TreeTable', TreeTable)
 
 // 為axios設置默認請求地址
 axios.defaults.baseURL = 'http://127.0.0.1:8888/api/private/v1/'

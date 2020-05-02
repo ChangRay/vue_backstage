@@ -403,6 +403,11 @@ export default {
     },
     // 刪除角色
     async delete_role(roleId) {
+      // !!!!!!!!!-------隱藏控制刪除權限----------
+      if (window.sessionStorage.getItem('user') !== 'ray') {
+        return this.$message.warning('您為測試觀察管理員，無法刪除數據')
+      }
+
       const result = await this.$confirm(
         '此操作將永久刪除該角色, 是否繼續?',
         '移除角色',
