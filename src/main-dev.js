@@ -12,6 +12,10 @@ import './assets/fonts/iconfont.css'
 // 導入vue-table-with-tree-grid
 import TreeTable from 'vue-table-with-tree-grid'
 
+// 導入nprogress(頂部進度條 - 在request時start/在response done)
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
+
 // 導入富文本編輯器  並 全局註冊組件
 import VueQuillEditor from 'vue-quill-editor'
 
@@ -46,9 +50,17 @@ Vue.component('TreeTable', TreeTable)
 axios.defaults.baseURL = 'http://127.0.0.1:8888/api/private/v1/'
 // 為axios的所有請求設置攔截器(預先處理在pass請求給服務器 = 中間件的概念)
 axios.interceptors.request.use(config => {
-  console.log(config)
+  // nprogress開始
+  NProgress.start()
   // 配置請求頭 - Authorization
   config.headers.Authorization = window.sessionStorage.getItem('token')
+  // 返回加工過的請求(必須)
+  return config
+})
+
+axios.interceptors.response.use(config => {
+  // nprogress結束
+  NProgress.done()
   // 返回加工過的請求(必須)
   return config
 })
