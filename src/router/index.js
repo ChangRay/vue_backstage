@@ -7,6 +7,7 @@ import Users from '../components/Users/Users.vue'
 import Rights from '../components/Rights/Rights.vue'
 import Roles from '../components/Rights/Roles.vue'
 import Cate from '../components/Goods/Cate.vue'
+import Params from '../components/Goods/Params.vue'
 
 // 註冊插件全局使用
 Vue.use(VueRouter)
@@ -29,7 +30,8 @@ const routes = [
       { path: '/users', component: Users },
       { path: '/rights', component: Rights },
       { path: '/roles', component: Roles },
-      { path: '/categories', component: Cate }
+      { path: '/categories', component: Cate },
+      { path: '/params', component: Params }
     ]
   }
 ]
