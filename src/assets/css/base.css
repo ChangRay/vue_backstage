@@ -37,9 +37,25 @@ img {
   margin: 10px;
 }
 
+.el-steps {
+  margin: 10px 0;
+}
+
+.el-step__title {
+  font-size: 12px;
+}
+
 .el-table,
 .zk-table {
   width: 100%;
   margin: 15px 0;
   font-size: 12px;
+}
+
+.quill-editor {
+  margin: 15px 0;
+}
+
+.ql-editor {
+  min-height: 300px;
 }

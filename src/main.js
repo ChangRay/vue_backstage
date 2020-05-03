@@ -12,6 +12,33 @@ import './assets/fonts/iconfont.css'
 // 導入vue-table-with-tree-grid
 import TreeTable from 'vue-table-with-tree-grid'
 
+// 導入富文本編輯器  並 全局註冊組件
+import VueQuillEditor from 'vue-quill-editor'
+
+import 'quill/dist/quill.core.css' // import styles
+import 'quill/dist/quill.snow.css' // for snow theme
+import 'quill/dist/quill.bubble.css' // for bubble theme
+
+Vue.use(VueQuillEditor)
+
+// 全局過濾器  調用時在過濾的值後面加上 |   value | filterName
+Vue.filter('dateformat', function(originValue) {
+  // 時間戳 to 日期
+  const date = new Date(originValue)
+
+  const y = date.getFullYear()
+  // + ''  轉String  padStart如果不滿指定長度，用0填充在前面
+  // 月份值從0開始
+  const m = (date.getMonth() + 1 + '').padStart(2, '0')
+  const d = (date.getDate() + '').padStart(2, '0')
+
+  const hh = (date.getHours() + '').padStart(2, '0')
+  const mm = (date.getMinutes() + '').padStart(2, '0')
+  const ss = (date.getSeconds() + '').padStart(2, '0')
+
+  return `${y}-${m}-${d} ${hh}:${mm}:${ss}`
+})
+
 // 全局註冊自定義組件
 Vue.component('TreeTable', TreeTable)
 
